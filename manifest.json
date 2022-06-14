@@ -1,0 +1,19 @@
+{
+  "name": "Demo extension",
+  "description": "A Chrome Extension that shows random quotes as notification",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["storage", "alarms", "notifications", "tabs", "tabCapture"],
+  "action": {
+    "default_title": "Take a Screenshot"
+  },
+  "icons": {
+    "16": "/assets/icon-16.png",
+    "32": "/assets/icon-32.png",
+    "48": "/assets/icon-48.png",
+    "128": "/assets/icon-128.png"
+  }
+}
