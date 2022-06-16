@@ -1,6 +1,6 @@
 chrome.runtime.onInstalled.addListener(() => {
   console.log('onInstalled...');
-  chrome.alarms.create('startRequest', { periodInMinutes: 0.5 });
+  chrome.alarms.create('startRequest', { periodInMinutes: 2 });
   console.log('calling captureVisible for first time');
   initialize();
 });
