@@ -13,7 +13,8 @@
     "desktopCapture",
     "downloads",
     "tabs",
-    "storage"
+    "storage",
+    "<all_urls>"
   ],
   "action": {
     "default_title": "Take a Screenshot"

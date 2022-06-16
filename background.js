@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(() => {
 function initialize() {
   var screenshot = {
     tab: 0,
-    // canvas: document.createElement('canvas'),
+    canvas: document.createElement('canvas'),
     startX: 0,
     startY: 0,
     scrollX: 0,
@@ -35,7 +35,6 @@ function initialize() {
           screenshot.canvas.height = height;
           var context = screenshot.canvas.getContext('2d');
           context.drawImage(image, 0, 0, width, height, 0, 0, width, height);
-          screenshot.postImage();
         };
         image.src = data;
 
