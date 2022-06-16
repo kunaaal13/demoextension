@@ -6,7 +6,15 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["storage", "alarms", "notifications", "tabs", "tabCapture"],
+  "permissions": [
+    "activeTab",
+    "alarms",
+    "notifications",
+    "desktopCapture",
+    "downloads",
+    "tabs",
+    "storage"
+  ],
   "action": {
     "default_title": "Take a Screenshot"
   },
@@ -15,5 +23,11 @@
     "32": "/assets/icon-32.png",
     "48": "/assets/icon-48.png",
     "128": "/assets/icon-128.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_script.js"]
+    }
+  ]
 }

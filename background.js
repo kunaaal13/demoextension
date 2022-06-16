@@ -1,45 +1,57 @@
 chrome.runtime.onInstalled.addListener(() => {
   console.log('onInstalled...');
-
-  // create alarm after extension is installed / upgraded
-  chrome.alarms.create('startRequest', { periodInMinutes: 0.1 });
-  startRequest();
-  screenshotRequest();
+  chrome.alarms.create('startRequest', { periodInMinutes: 0.5 });
+  console.log('calling captureVisible for first time');
+  initialize();
 });
 
-chrome.alarms.onAlarm.addListener((alarm) => {
-  startRequest();
-  screenshotRequest();
-});
+function initialize() {
+  var screenshot = {
+    tab: 0,
+    // canvas: document.createElement('canvas'),
+    startX: 0,
+    startY: 0,
+    scrollX: 0,
+    scrollY: 0,
+    docHeight: 0,
+    docWidth: 0,
+    visibleWidth: 0,
+    visibleHeight: 0,
+    scrollXCount: 0,
+    scrollYCount: 0,
+    scrollBarX: 17,
+    scrollBarY: 17,
+    captureStatus: true,
+    screenshotName: null,
 
-async function startRequest() {
-  console.log('startRequest');
-}
+    captureVisible: function (docWidth, docHeight) {
+      var formatParam = 'png';
+      chrome.tabs.captureVisibleTab(null, { format: formatParam, quality: 50 }, function (data) {
+        var image = new Image();
+        image.onload = function () {
+          var width = image.height < docHeight ? image.width - 17 : image.width;
+          var height = image.width < docWidth ? image.height - 17 : image.height;
+          screenshot.canvas.width = width;
+          screenshot.canvas.height = height;
+          var context = screenshot.canvas.getContext('2d');
+          context.drawImage(image, 0, 0, width, height, 0, 0, width, height);
+          screenshot.postImage();
+        };
+        image.src = data;
 
-function screenshotRequest() {
-  console.log('screenshotRequest works');
-  const displayMediaOptions = {
-    video: {
-      cursor: 'always',
-    },
-    audio: {
-      echoCancellation: true,
-      noiseSuppression: true,
-      sampleRate: 44100,
+        chrome.storage.local.set({ key: value }, function () {
+          console.log('Value is set to ' + value);
+        });
+
+        console.log(image.src);
+      });
     },
   };
-  startCapture(displayMediaOptions)
-    .then((stream) => {
-      console.log('stream: ', stream);
-    })
-    .catch((err) => {
-      console.error('Error:' + err);
-    });
+
+  screenshot.captureVisible();
 }
 
-function startCapture(displayMediaOptions) {
-  return navigator.mediaDevices.getDisplayMedia(displayMediaOptions).catch((err) => {
-    console.error('Error:' + err);
-    return null;
-  });
-}
+chrome.alarms.onAlarm.addListener((alarm) => {
+  console.log('alarm invoked');
+  initialize();
+});
